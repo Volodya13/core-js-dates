@@ -201,12 +201,21 @@ function getCountWeekendsInMonth(month, year) {
  * Date(2024, 0, 31) => 5
  * Date(2024, 1, 23) => 8
  */
-function getWeekNumberByDate(/* date */) {
-  throw new Error('Not implemented');
+function getWeekNumberByDate(date) {
+  const dateObj = new Date(date);
+  dateObj.setMonth(0, 1);
+  let day = dateObj.getDay();
+  if (day === 0) {
+    day = 7;
+  }
+  dateObj.setDate(7 - day + 1);
+  const weekNumber =
+    Math.ceil((date - dateObj) / (7 * 24 * 60 * 60 * 1000)) + 1;
+  return weekNumber;
 }
-// getWeekNumberByDate(new Date(2024, 0, 3))
-// getWeekNumberByDate(new Date(2024, 0, 31))
-// getWeekNumberByDate(new Date(2024, 1, 23))
+// console.log(getWeekNumberByDate(new Date(2024, 0, 3)));
+// console.log(getWeekNumberByDate(new Date(2024, 0, 31)));
+// console.log(getWeekNumberByDate(new Date(2024, 1, 23)));
 
 /**
  * Returns the date of the next Friday the 13th from a given date.
@@ -219,8 +228,13 @@ function getWeekNumberByDate(/* date */) {
  * Date(2024, 0, 13) => Date(2024, 8, 13)
  * Date(2023, 1, 1) => Date(2023, 9, 13)
  */
-function getNextFridayThe13th(/* date */) {
-  throw new Error('Not implemented');
+function getNextFridayThe13th(date) {
+  const nextDate = new Date(date);
+  nextDate.setDate(13);
+  while (nextDate.getDay() !== 5) {
+    nextDate.setMonth(nextDate.getMonth() + 1);
+  }
+  return nextDate;
 }
 
 /**
@@ -234,8 +248,9 @@ function getNextFridayThe13th(/* date */) {
  * Date(2024, 5, 1) => 2
  * Date(2024, 10, 10) => 4
  */
-function getQuarter(/* date */) {
-  throw new Error('Not implemented');
+function getQuarter(date) {
+  const month = date.getMonth() + 1;
+  return Math.ceil(month / 3);
 }
 
 /**
@@ -272,8 +287,10 @@ function getWorkSchedule(/* period, countWorkDays, countOffDays */) {
  * Date(2022, 2, 1) => false
  * Date(2020, 2, 1) => true
  */
-function isLeapYear(/* date */) {
-  throw new Error('Not implemented');
+function isLeapYear(date) {
+  const year = date.getFullYear();
+  if (year % 4 === 0 && year % 100 !== 0) return true;
+  return year % 400 === 0;
 }
 
 module.exports = {
